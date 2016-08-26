@@ -43,7 +43,7 @@ public class LoginController implements Serializable {
     }
 
     public String validateUsernamePassword() {
-        boolean valid = validate(username, password);
+            boolean valid = validate(username, password);
         if (valid) {
             HttpSession session = SessionBean.getSession();
             session.setAttribute("username", username);
