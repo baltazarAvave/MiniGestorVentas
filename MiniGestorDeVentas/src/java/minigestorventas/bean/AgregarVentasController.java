@@ -8,11 +8,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import minigestorventas.entities.Clientes;
+import minigestorventas.entities.Vendedores;
+import minigestorventas.sessions.ClientesFacade;
+import minigestorventas.sessions.VendedoresFacade;
 
 @Named("agregarVentasController")
 @SessionScoped
@@ -21,12 +28,22 @@ public class AgregarVentasController implements Serializable {
     private String nroVenta;
     private String fechaVenta;
     private Connection con = null;
+    private List<Clientes> clientesList = new ArrayList<Clientes>(); //comboClientes
+    private List<Vendedores> vendedoresList = new ArrayList<Vendedores>(); //comboVendedores
+
+    private Integer idCliente;
+    private Vendedores vendedor;
 
     @PostConstruct
     void initialiseSession() {
         con = DataConnect.getConnection();
         this.cargarVista();
     }
+
+    @EJB
+    private ClientesFacade clientesFacade = new ClientesFacade();
+    @EJB
+    private VendedoresFacade vendedoresFacade = new VendedoresFacade();
 
     public void cargarVista() {
 
@@ -43,6 +60,9 @@ public class AgregarVentasController implements Serializable {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String today = formatter.format(date);
         fechaVenta = today;
+
+        this.clientesList = clientesFacade.findAll();
+        this.vendedoresList = vendedoresFacade.findAll();
     }
 
     public int obtenerNroVenta() {
@@ -77,4 +97,45 @@ public class AgregarVentasController implements Serializable {
         this.fechaVenta = fechaVenta;
     }
 
+    public Connection getCon() {
+        return con;
+    }
+
+    public void setCon(Connection con) {
+        this.con = con;
+    }
+
+    public List<Clientes> getClientesList() {
+        return clientesList;
+    }
+
+    public void setClientesList(List<Clientes> clientesList) {
+        this.clientesList = clientesList;
+    }
+
+    public List<Vendedores> getVendedoresList() {
+        return vendedoresList;
+    }
+
+    public void setVendedoresList(List<Vendedores> vendedoresList) {
+        this.vendedoresList = vendedoresList;
+    }
+
+    public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public Vendedores getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedores vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    
 }
