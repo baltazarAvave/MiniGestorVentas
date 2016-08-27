@@ -23,8 +23,29 @@
                         <h:outputText value="Fecha:" />
                         <h:outputText id="fechaVenta" value="#{agregarVentasController.fechaVenta}" />
                         <h:outputText value="Vendedor:" />
-                        <h:outputText id="comboVendedores" value="ComboVendedor" />
+                        <h:selectOneMenu id="comboVendedores" value="#{agregarVentasController.vendedor}">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{agregarVentasController.vendedoresList}" 
+                                           var="vendedoreslist" 
+                                           itemLabel="#{vendedoreslist.nombre} #{vendedoreslist.apellido}" 
+                                           itemValue="#{vendedoreslist}" />
+                        </h:selectOneMenu>
                     </h:panelGrid>
+                    <p:panel header="Agregar Productos">
+                        <h:panelGrid columns="4" cellpadding="5">
+                            <h:outputText value="Producto:" />
+                            <h:selectOneMenu id="comboProductos" value="#{agregarVentasController.producto}">
+                                <f:selectItem itemLabel="Seleccione" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{agregarVentasController.productosList}" 
+                                               var="productoslist" 
+                                               itemLabel="#{productoslist.nombre}" 
+                                               itemValue="#{productoslist}" />
+                            </h:selectOneMenu>
+                            <h:outputText value="Cantidad:" />
+                            <p:spinner id="cantidad" value="#{agregarVentasController.cantidad}" min="1" size="2" />
+                            <p:commandButton action="#{agregarVentasController.agregarProducto}" id="buttonAddProducto" value="Agregar Producto" immediate="true"/>
+                        </h:panelGrid>
+                    </p:panel>
                 </p:panel>
             </h:form>
         </ui:define>

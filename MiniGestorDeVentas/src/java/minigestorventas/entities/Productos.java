@@ -34,6 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Productos.findByExistencia", query = "SELECT p FROM Productos p WHERE p.existencia = :existencia")})
 public class Productos implements Serializable {
 
+    @Column(name = "precio")
+    private Integer precio;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -111,6 +114,14 @@ public class Productos implements Serializable {
     @Override
     public String toString() {
         return "minigestorventas.entities.Productos[ id=" + id + " ]";
+    }
+
+    public Integer getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Integer precio) {
+        this.precio = precio;
     }
     
 }

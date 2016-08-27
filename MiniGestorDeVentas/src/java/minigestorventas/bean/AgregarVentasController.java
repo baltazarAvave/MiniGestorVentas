@@ -17,8 +17,10 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import minigestorventas.entities.Clientes;
+import minigestorventas.entities.Productos;
 import minigestorventas.entities.Vendedores;
 import minigestorventas.sessions.ClientesFacade;
+import minigestorventas.sessions.ProductosFacade;
 import minigestorventas.sessions.VendedoresFacade;
 
 @Named("agregarVentasController")
@@ -30,20 +32,25 @@ public class AgregarVentasController implements Serializable {
     private Connection con = null;
     private List<Clientes> clientesList = new ArrayList<Clientes>(); //comboClientes
     private List<Vendedores> vendedoresList = new ArrayList<Vendedores>(); //comboVendedores
+    private List<Productos> productosList = new ArrayList<Productos>(); //comboProductos
 
     private Integer idCliente;
     private Vendedores vendedor;
+    private Productos producto;
+    private int cantidad;
+
+    @EJB
+    private ClientesFacade clientesFacade = new ClientesFacade();
+    @EJB
+    private VendedoresFacade vendedoresFacade = new VendedoresFacade();
+    @EJB
+    private ProductosFacade productosFacade = new ProductosFacade();
 
     @PostConstruct
     void initialiseSession() {
         con = DataConnect.getConnection();
         this.cargarVista();
     }
-
-    @EJB
-    private ClientesFacade clientesFacade = new ClientesFacade();
-    @EJB
-    private VendedoresFacade vendedoresFacade = new VendedoresFacade();
 
     public void cargarVista() {
 
@@ -63,6 +70,7 @@ public class AgregarVentasController implements Serializable {
 
         this.clientesList = clientesFacade.findAll();
         this.vendedoresList = vendedoresFacade.findAll();
+        this.productosList = productosFacade.findAll();
     }
 
     public int obtenerNroVenta() {
@@ -79,6 +87,12 @@ public class AgregarVentasController implements Serializable {
             System.out.println("Error al obtener secuencia -->" + ex.getMessage());
         }
         return ultimoValor;
+    }
+    
+    public void agregarProducto() {
+//        int i = this.listaDetalle.size() + 1;
+//        OrdenTrabajoDet otd = new OrdenTrabajoDet(BigDecimal.valueOf(i), "");
+//        this.listaDetalle.add(otd);
     }
 
     public String getNroVenta() {
@@ -137,5 +151,28 @@ public class AgregarVentasController implements Serializable {
         this.vendedor = vendedor;
     }
 
-    
+    public List<Productos> getProductosList() {
+        return productosList;
+    }
+
+    public void setProductosList(List<Productos> productosList) {
+        this.productosList = productosList;
+    }
+
+    public Productos getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Productos producto) {
+        this.producto = producto;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
 }
